@@ -1,0 +1,113 @@
+\documentclass[conference]{IEEEtran}
+\IEEEoverridecommandlockouts
+% The preceding line is only needed to identify funding in the first footnote. If that is unneeded, please comment it out.
+\usepackage{cite}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithmic}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\def\BibTeX{{\rm B\kern-.05em{\sc i\kern-.025em b}\kern-.08em
+    T\kern-.1667em\lower.7ex\hbox{E}\kern-.125emX}}
+\begin{document}
+
+\title{Bitcoin: Predição da valorização da criptomoeda\\
+}
+
+\author{\IEEEauthorblockN{1\textsuperscript{st} José Carlos da Silva Cruz}
+\IEEEauthorblockA{
+\textit{Centro de informática da Universidade Federal de Pernambuco (CIn-UFPE)}\\
+Recife, Brasil \\
+jcsc@cin.ufpe.br}
+}
+
+\maketitle
+
+\begin{abstract}
+Este documento descreve a proposta de projeto para a predição da taxa de valoração do bitcoin após uma semana, analisando o valor da criptomoeda em um intervalo de tempo antes da data que deseja ser analisada. O método utilizado será machine learning com o algoritmo ingênuo de Bayes.
+\end{abstract}
+
+\begin{IEEEkeywords}
+Bayes, Machine, learning, bitcoin, criptomoedas, estatística, big, data
+\end{IEEEkeywords}
+
+\section{Introdução}
+Este documento descreve toda a proposta planejada para a realização do aprendizado de máquina sobre a predição da valoração do bitcoin. Logo, será descrita a forma utilizada para a construção do banco de dados, métodos de aprendizagem e análise dos dados e, consequentemente, o resultado final e modos de uso da aplicação em estudo.
+
+\section{Banco de dados}
+
+\subsection{Buscando informação}
+
+A busca por dados para serem analisados é a principal preocupação de todo analista de dados, e para a análise do nosso objetivo não será diferente. Há várias plataformas que armazenam dados para treinamentos, tais como a "UCI Machine Learning" [1], contudo, não há nesta plataforma dados sobre o bitcoin ou qualquer outra criptomoeda. Contudo, a fonte de dados sobre o valor da moeda em todo seu histórico pode ser facilmente encontrada na invest.com [2]. A informação é armazenada e pode ser filtrada por períodos, com preços de máxima e mínima para cada dia desde o nascimento da criptomoeda.
+
+\subsection{Filtrando os dados}
+
+A forma de retirar informações de uma plataforma online pode ser facilmente realizada com técnicas famosas chamadas "webscrapping", técnica utilizada para filtrar informações da internet por meio de softwares automatizados. Logo, para realizar esta tarefa, será utilizado a linguagem python [3] e a ferramenta selenium [4]. Portanto, apenas com essas duas ferramentas seremos capazes de montar nosso próprio banco de dados e utilizá-lo na aprendizagem de máquina.
+
+\section{Análise e tratamento dos dados}
+
+Após armazenar todos os dados que serão utilizados no treinamento, deveremos levar em consideração como eles se comportam, removendo qualquer viés que possa atrapalhar a análise. Um exemplo claro é desconsiderar alguns dados que constam no início do surgimento da criptomoeda, pois é perceptível que o cenário de compra foi completamente modificado com o avanço da tecnologia e inclusão digital no mundo todo. Algumas das técnicas utilizadas para análise dos dados serão: histograma, gaussiana e/ou redes neurais.
+
+\subsection{histogramas}\label{AA}
+O histograma será utilizado para contabilizar a frequência de um determinado intervalo de valorização da moeda, sabendo qual a valorização em um intervalo anterior ao dia em estudo. Este histograma será utilizado para suavizar resultados que não estão presentes no banco de dados, tendo em vista que nosso campo de estudo é classificar resultados no conjunto dos números reais.
+
+\subsection{gaussiana}
+A gaussiana será uma provável resposta na suavização dos dados. Assumindo que os dados obedecem a curva normal, poderemos predizer o resultado esperado para um determinado valor real que não estava presente no conjunto de dados. Aumentando assim o poder de informação sobre o conjunto de dados analisados.
+
+\subsection{redes neurais}
+Portanto, caso os dados não obedeçam a curva normal, precisamos encontrar um função que classifique aproximadamente cada valor real com a sua projeção de valoração da criptomoeda. Portanto, para tal atividade, faz-se necessário o uso de técnicas de redes neurais. A rede neural que poderá ser utilizada é apenas um simples conjunto baseado na "backprogagation", onde a rede aprende sobre os dados analisados e consegue predizer um resultado que pode ou não condizer com o seu rótulo.
+
+\section{Algoritmo ingênuo de Bayes}
+
+O algoritmo ingênuo de Bayes, baseado no teorema de Bayes, é uma análise probabilística sobre os dados apresentados. O algoritmo analisa a amostra de dados e calcula qual a probabilidade de um evento acontecer considerando a existência de um outro evento qualquer. Em modos matemáticos, seja \textbf{A} um evento desejável, qual a probabilidade de \textbf{A} acontecer, considerando que o evento \textbf{B} aconteceu?
+
+O teorema de Bayes responde essa pergunta da seguinte forma:
+\begin{equation}
+    P(A|B) = \frac{P(B|A)*P(B)}{P(A)}
+\end{equation}
+
+Em que \(P(A|B)\) é a probabilidade do evento \textbf{A} acontecer, considerando que o evento \textbf{B} já aconteceu, \(P(B|A)\) é a probabilidade do evento \textbf{B} acontecer, considerando que o evento \textbf{A} aconteceu, \(P(A)\) é a probabilidade do evento \textbf{A} acontecer e \(P(B)\) é a probabilidade do evento \textbf{B} acontecer.
+
+Em nosso caso de estudo, os eventos serão:
+
+\begin{itemize}
+    \item A probabilidade da valorização da criptomoeda em uma semana ser maior ou igual do que P\%.
+    \item Um vetor com a quantidade de valorização da moeda em uma determinada quantidade de dias antes do dia analisado. Cada elemento desse vetor será uma valorização da moeda em relação a uma determinada quantidade inteira de dias anteriores.
+\end{itemize}
+
+Logo, como será uma quantidade real, é impossível categorizar cada classe de eventos em eventos finitos, portanto, precisaremos modificar nossa função do teorema de Bayes, que será da seguinte forma:
+
+\begin{equation}
+    P(y_i, X) = P(y_i) * \prod_{j=1}^{m} P(X_j|y_i)
+\end{equation}
+
+Em que \(y_i\) é a probabilidade da valorização ser maior ou igual a \(y_i\%\) e \(X\) é o vetor de cada estado de valorização da moeda nos dias anteriores de uma determinada data analisada.
+
+\section{Objetivos}
+
+Após o treinamento e análise sobre o conjunto de dados, utilizaremos as informação para realizar predições de valorizações do bitcoin. Essas predições serão eficazes para determinar se é valida a compra de novos bitcoins ou se será necessária a venda, dentro do período de uma semana, com base na análise de valores antes realizados. O usuário poderá escolher qual valorização a moeda terá com base na probabilidade de resultados anteriores darem como correto para determinada previsão.
+
+\section{Justificativa}
+
+A escolha do assunto estudado se deve ao fato da supervalorização das criptomoedas, tais como a bitcoin, ethereum, litecoin entre outras. A decisão de comprar ou vender uma determinada criptomoeda se dá, na maioria das vezes, apenas pelo olhar do gráfico da moeda para os compradores mais recentes. Portanto, a existência de um software baseado em machine learning e análises probabilísticas podem servir como apoio para a compra ou não compra, facilitando assim a vida dos investimentos do usuário. É comum observar também que foi escolhido o período de uma semana, tendo em vista que essa ação é de alto risco, evitando predizer resultados a longo tempo e acabar quebrando expectativas dos compradores ou vendedores da criptomoeda.
+
+\section{Cronograma}
+
+O cronograma previsto será:
+
+\begin{itemize}
+    \item dia 18/11: Construção de webscrapping para construção do banco de dados.
+    \item dia 25/11: Análise do comportamento dos dados e escolha do modelo a ser utilizado (gaussiana e/ou redes neurais).
+    \item dia 02/12: Validação do modelo utilizando os últimos valores do banco de dados criados e documentação do projeto final.
+\end{itemize}
+
+\begin{thebibliography}{00}
+\bibitem{b1} sem autor. UCI Machine Learning. Disponível em: https://archive.ics.uci.edu/ml/datasets.php?format=\&task=cla\&att=\&area=\&numAtt=\&numIns=\&type=\&sort=nameUp\&view=table. Acesso em: 11, novembro de 2021.
+\bibitem{b2} sem autor. Dados históricos do bitcoin. invest. Disponível em: https://br.investing.com/crypto/bitcoin/historical-data. Acesso em: 11, novembro de 2021.
+\bibitem{b3} sem autor. Python documentation. Disponível em: https://www.google.com/search?q=python\&oq=python\&aqs=chrome..69i57j0i512j0i433i512j0i512j0i433i512j69i60l3.1047j0j7\&sourceid=chrome\&ie=UTF-8.  Acesso em: 11, novembro de 2021.
+\bibitem{b4} sem autor. Selenium documentation. Disponível em: https://www.selenium.dev/documentation/.  Acesso em: 11, novembro de 2021.
+\end{thebibliography}
+\vspace{12pt}
+\color{red}.
+
+\end{document}
